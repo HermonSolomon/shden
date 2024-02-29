@@ -10,28 +10,28 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-// model Post {
-//   id        String     @default(cuid()) @id
-//   title     String
-//   content   String?
-//   published Boolean @default(false)
-//   author    User?   @relation(fields: [authorId], references: [id])
-//   authorId  String?
-// }
-
-// model User {
-//   id            String       @default(cuid()) @id
-//   name          String?
-//   email         String?   @unique
-//   createdAt     DateTime  @default(now()) @map(name: "created_at")
-//   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-//   posts         Post[]
-//   @@map(name: "users")
-// }
 
 model User {
   id Int @id @default(autoincrement())
   name String @db.VarChar(255)
   email String @unique @db.VarChar(255)
   password String @db.VarChar(255)
+  Product Product[]
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(255)
+  description String @db.Text
+  category String
+  style String
+  size String
+  store String
+  inventory Int
+  color String  
+  price Int
+  images String @db.Text
+  userId Int
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
 }
